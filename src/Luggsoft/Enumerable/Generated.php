@@ -10,18 +10,18 @@ use Traversable;
  * Creates a new enumerable from a generator callable.
  * The generator callable should return a Traversable (e.g. a Generator from a yield-based function).
  *
- * @param callable $generator A callable that returns a Traversable when invoked.
- * @param callable|null $catching An optional error handler invoked with Throwable when iteration encounters an error. Defaults to re-throwing.
+ * @param  callable            $generator A callable that returns a Traversable when invoked.
+ * @param  callable|null       $catching  An optional error handler invoked with Throwable when iteration encounters an error. Defaults to re-throwing.
  * @return EnumerableInterface A new enumerable wrapping the generated iterable.
  *
  * @example
  * generated(fn(): Generator => yield from [1, 2, 3])
  *     ->into(arrayOf()); // [0 => 1, 1 => 2, 2 => 3]
  */
-function generated(callable $generator, callable|null $catching = null): EnumerableInterface
+function generated(callable $generator, callable | null $catching = null): EnumerableInterface
 {
     return enumerate(
-        iterable: new class($generator) implements IteratorAggregate {
+        iterable: new class ($generator) implements IteratorAggregate {
             /**
              * @var Closure The generator closure, bound from the $generator callable.
              */

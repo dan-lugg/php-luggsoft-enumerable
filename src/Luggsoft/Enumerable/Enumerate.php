@@ -9,8 +9,8 @@ use Traversable;
 /**
  * Creates a new enumerable from an iterable or callable.
  *
- * @param callable|iterable $iterable An iterable, or a callable that returns an iterable when invoked.
- * @param callable|null $catching An optional error handler invoked with Throwable when iteration encounters an error. Defaults to re-throwing.
+ * @param  callable|iterable   $iterable An iterable, or a callable that returns an iterable when invoked.
+ * @param  callable|null       $catching An optional error handler invoked with Throwable when iteration encounters an error. Defaults to re-throwing.
  * @return EnumerableInterface A new enumerable wrapping the resolved iterable.
  *
  * @example
@@ -23,14 +23,14 @@ use Traversable;
  *     ->then(mapBy(fn(int $v): int => $v ** 2))
  *     ->into(stringOf(', ')); // '1, 4, 9, 16, 25'
  */
-function enumerate(callable|iterable $iterable, callable|null $catching = null): EnumerableInterface
+function enumerate(callable | iterable $iterable, callable | null $catching = null): EnumerableInterface
 {
-    return new class(
+    return new class (
         iterable: match (true) {
             is_iterable($iterable) => $iterable,
             is_callable($iterable) => call_user_func($iterable),
         },
-        catching: $catching ?? fn(Throwable $exception) => throw $exception,
+        catching: $catching ?? fn (Throwable $exception) => throw $exception,
     ) implements EnumerableInterface {
         /**
          * @var iterable The underlying iterable being enumerated.
@@ -57,8 +57,8 @@ function enumerate(callable|iterable $iterable, callable|null $catching = null):
         /**
          * Applies a transformation to the iterable and returns a new enumerable.
          *
-         * @param callable(iterable):iterable $callable A callable that receives (iterable, callable) and returns the transformed iterable.
-         * @return EnumerableInterface A new enumerable wrapping the transformed iterable.
+         * @param  callable(iterable, callable):iterable $callable A callable that receives (iterable, callable) and returns the transformed iterable.
+         * @return EnumerableInterface                   A new enumerable wrapping the transformed iterable.
          */
         public function then(callable $callable): EnumerableInterface
         {
@@ -72,15 +72,15 @@ function enumerate(callable|iterable $iterable, callable|null $catching = null):
          * Terminates the enumerable by applying a reducer to the iterable.
          * When no callable is given, materializes the iterable as an array.
          *
-         * @param callable(iterable):mixed|null $callable A terminal callable that receives (iterable, callable) and returns a reduced value, or null to default to iterator_to_array.
-         * @return mixed The result of the terminal callable.
+         * @param  callable(iterable, callable):mixed|null $callable A terminal callable that receives (iterable, callable) and returns a reduced value, or null to default to iterator_to_array.
+         * @return mixed                                   The result of the terminal callable.
          *
          * @example
          * enumerate(['a', 'b', 'c'])->into(); // [0 => 'a', 1 => 'b', 2 => 'c']
          */
-        public function into(callable|null $callable = null): mixed
+        public function into(callable | null $callable = null): mixed
         {
-            return ($callable ?? fn($iterable) => iterator_to_array($iterable))($this->iterable, $this->catching);
+            return ($callable ?? fn ($iterable) => iterator_to_array($iterable))($this->iterable, $this->catching);
         }
 
         /**
@@ -96,4 +96,3 @@ function enumerate(callable|iterable $iterable, callable|null $catching = null):
         }
     };
 }
-

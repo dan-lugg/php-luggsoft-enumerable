@@ -4,7 +4,7 @@ namespace Luggsoft\Enumerable;
 
 class GeneratedTest extends TestCaseBase
 {
-    public function testGeneratedNormal(): void
+    public function test_generated_normal(): void
     {
         $generated = generated(function () {
             foreach ([1, 2, 3] as $value) {

@@ -1,16 +1,44 @@
 {
   "name": "luggsoft/enumerable",
-  "description": "PHP Enumerables",
-  "version": "1.0.0",
+  "description": "PHP Enumerables — a fluent, lazy enumeration library inspired by LINQ",
   "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Dan Lugg",
+      "email": "dan.lugg@gmail.com"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/luggsoft/luggsoft-php-enumerable/issues",
+    "source": "https://github.com/luggsoft/luggsoft-php-enumerable"
+  },
+  "keywords": [
+    "enumerable",
+    "linq",
+    "collection",
+    "iterable",
+    "functional",
+    "lazy"
+  ],
   "require": {
     "php": "^8.1"
   },
   "require-dev": {
+    "friendsofphp/php-cs-fixer": "^3.64",
+    "phpstan/phpstan": "^1.12",
     "phpunit/phpunit": "^10.5"
   },
   "config": {
-    "bin-dir": "bin"
+    "bin-dir": "bin",
+    "sort-packages": true
+  },
+  "scripts": {
+    "test": "phpunit",
+    "analyse": "phpstan analyse --configuration=phpstan.neon.dist",
+    "cs": "php-cs-fixer fix --dry-run --diff",
+    "cs-fix": "php-cs-fixer fix",
+    "docs": "phpdoc"
   },
   "autoload": {
     "psr-4": {

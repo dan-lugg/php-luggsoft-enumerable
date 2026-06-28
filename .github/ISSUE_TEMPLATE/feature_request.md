@@ -1,0 +1,29 @@
+---
+name: Feature Request
+about: Suggest an idea for this project
+title: ''
+labels: enhancement
+assignees: ''
+---
+
+**Is your feature request related to a problem?**
+
+A clear and concise description of what the problem is.
+
+**Desired Solution**
+
+A clear and concise description of what you want to happen.
+
+**Alternatives Considered**
+
+A clear and concise description of any alternative solutions or features you've considered.
+
+**Example Usage**
+
+```php
+// How you imagine the feature would be used
+```
+
+**Additional Context**
+
+Add any other context or references here.

@@ -3,13 +3,15 @@
 namespace Luggsoft\Enumerable\Functions;
 
 use Generator;
-use Throwable;
+
 use function Luggsoft\Enumerable\enumerate;
+
+use Throwable;
 
 /**
  * Invokes a side-effect callable for each element, yielding the original elements unchanged.
  *
- * @param (callable(mixed,mixed):void) $callable A callable invoked with (value, key) for each element. Return value is ignored.
+ * @param  (callable(mixed,mixed):void)             $callable A callable invoked with (value, key) for each element. Return value is ignored.
  * @return (callable(iterable,(callable)):iterable) A callable that yields the original key-value pairs after invoking $callable.
  *
  * @example
@@ -24,19 +26,17 @@ function forEachWith(callable $callable): callable
             try {
                 $callable($value, $key);
                 yield $key => $value;
-            }
-            catch (Throwable $exception) {
+            } catch (Throwable $exception) {
                 $catching($exception);
             }
         }
     };
 }
 
-
 /**
  * Transforms each element using a selector, preserving keys.
  *
- * @param (callable(mixed,mixed):mixed) $selector A callable receiving (value, key) and returning the transformed value.
+ * @param  (callable(mixed,mixed):mixed)            $selector A callable receiving (value, key) and returning the transformed value.
  * @return (callable(iterable,(callable)):iterable) A callable that yields the transformed values with original keys preserved.
  *
  * @example
@@ -50,8 +50,7 @@ function mapBy(callable $selector): callable
         foreach ($iterable as $key => $value) {
             try {
                 yield $key => $selector($value, $key);
-            }
-            catch (Throwable $exception) {
+            } catch (Throwable $exception) {
                 $catching($exception);
             }
         }
@@ -61,7 +60,7 @@ function mapBy(callable $selector): callable
 /**
  * Transforms each key using a selector, preserving values.
  *
- * @param (callable(mixed,mixed):mixed) $selector A callable receiving (value, key) and returning the new key.
+ * @param  (callable(mixed,mixed):mixed)            $selector A callable receiving (value, key) and returning the new key.
  * @return (callable(iterable,(callable)):iterable) A callable that yields values with transformed keys.
  *
  * @example
@@ -75,8 +74,7 @@ function mapKeysBy(callable $selector): callable
         foreach ($iterable as $key => $value) {
             try {
                 yield $selector($value, $key) => $value;
-            }
-            catch (Throwable $exception) {
+            } catch (Throwable $exception) {
                 $catching($exception);
             }
         }
@@ -86,7 +84,7 @@ function mapKeysBy(callable $selector): callable
 /**
  * Yields only elements satisfying the predicate.
  *
- * @param (callable(mixed,mixed):bool)|null $predicate A predicate receiving (value, key). Defaults to a truthiness check via empty().
+ * @param  (callable(mixed,mixed):bool)|null        $predicate A predicate receiving (value, key). Defaults to a truthiness check via empty().
  * @return (callable(iterable,(callable)):iterable) A callable that yields only the key-value pairs for which the predicate returns true.
  *
  * @example
@@ -94,9 +92,9 @@ function mapKeysBy(callable $selector): callable
  *     ->then(filterBy(fn(int $v): bool => $v % 2 === 0))
  *     ->into(arrayOf()); // [1 => 2, 3 => 4]
  */
-function filterBy(callable|null $predicate = null): callable
+function filterBy(callable | null $predicate = null): callable
 {
-    $predicate ??= static fn($value, $key): bool => !empty($value);
+    $predicate ??= static fn ($value, $key): bool => !empty($value);
 
     return static function (iterable $iterable, callable $catching) use ($predicate): iterable {
         foreach ($iterable as $key => $value) {
@@ -104,8 +102,7 @@ function filterBy(callable|null $predicate = null): callable
                 if ($predicate($value, $key)) {
                     yield $key => $value;
                 }
-            }
-            catch (Throwable $exception) {
+            } catch (Throwable $exception) {
                 $catching($exception);
             }
         }
@@ -115,7 +112,7 @@ function filterBy(callable|null $predicate = null): callable
 /**
  * Yields elements while the predicate holds, then stops iteration.
  *
- * @param (callable(mixed,mixed):bool)|null $predicate A predicate receiving (value, key). Defaults to a truthiness check via empty().
+ * @param  (callable(mixed,mixed):bool)|null        $predicate A predicate receiving (value, key). Defaults to a truthiness check via empty().
  * @return (callable(iterable,(callable)):iterable) A callable that yields elements until the predicate returns false, then stops.
  *
  * @example
@@ -123,9 +120,9 @@ function filterBy(callable|null $predicate = null): callable
  *     ->then(takeWhile(fn(int $v): bool => $v % 2 === 0))
  *     ->into(arrayOf()); // [0 => 2, 1 => 4]
  */
-function takeWhile(callable|null $predicate = null): callable
+function takeWhile(callable | null $predicate = null): callable
 {
-    $predicate ??= static fn($value, $key): bool => !empty($value);
+    $predicate ??= static fn ($value, $key): bool => !empty($value);
 
     return static function (iterable $iterable, callable $catching) use ($predicate): iterable {
         foreach ($iterable as $key => $value) {
@@ -136,8 +133,7 @@ function takeWhile(callable|null $predicate = null): callable
                 }
 
                 return;
-            }
-            catch (Throwable $exception) {
+            } catch (Throwable $exception) {
                 $catching($exception);
             }
         }
@@ -147,7 +143,7 @@ function takeWhile(callable|null $predicate = null): callable
 /**
  * Skips elements while the predicate holds, then yields the rest.
  *
- * @param (callable(mixed,mixed):bool)|null $predicate A predicate receiving (value, key). Defaults to a truthiness check via empty().
+ * @param  (callable(mixed,mixed):bool)|null        $predicate A predicate receiving (value, key). Defaults to a truthiness check via empty().
  * @return (callable(iterable,(callable)):iterable) A callable that drops elements while the predicate is true, then yields all remaining elements.
  *
  * @example
@@ -155,9 +151,9 @@ function takeWhile(callable|null $predicate = null): callable
  *     ->then(dropWhile(fn(int $v): bool => $v < 3))
  *     ->into(arrayOf()); // [2 => 3, 3 => 4, 4 => 5]
  */
-function dropWhile(callable|null $predicate = null): callable
+function dropWhile(callable | null $predicate = null): callable
 {
-    $predicate ??= static fn($value, $key): bool => !empty($value);
+    $predicate ??= static fn ($value, $key): bool => !empty($value);
 
     return static function (iterable $iterable, callable $catching) use ($predicate): iterable {
         $isDrop = true;
@@ -170,8 +166,7 @@ function dropWhile(callable|null $predicate = null): callable
 
                 $isDrop = false;
                 yield $key => $value;
-            }
-            catch (Throwable $exception) {
+            } catch (Throwable $exception) {
                 $catching($exception);
             }
         }
@@ -181,7 +176,7 @@ function dropWhile(callable|null $predicate = null): callable
 /**
  * Flattens nested iterables and transforms each element via an optional selector.
  *
- * @param (callable(mixed,mixed):mixed)|null $selector A selector receiving (value, key). Defaults to identity (returns $value).
+ * @param  (callable(mixed,mixed):mixed)|null       $selector A selector receiving (value, key). Defaults to identity (returns $value).
  * @return (callable(iterable,(callable)):iterable) A callable that recursively flattens nested iterables and yields transformed values.
  *
  * @example
@@ -189,14 +184,14 @@ function dropWhile(callable|null $predicate = null): callable
  *     ->then(flatMapBy())
  *     ->into(arrayOf()); // [0 => 1, 1 => 2, 2 => 3, 3 => 4] (numeric keys)
  */
-function flatMapBy(callable|null $selector = null): callable
+function flatMapBy(callable | null $selector = null): callable
 {
-    $selector ??= static fn($value, $key): mixed => $value;
+    $selector ??= static fn ($value, $key): mixed => $value;
 
     $recurse = static function (iterable $iterable) use (&$recurse): Generator {
         foreach ($iterable as $key => $value) {
             if (is_iterable($value)) {
-                yield from $recurse($value, $key);
+                yield from $recurse($value);
                 continue;
             }
 
@@ -208,8 +203,7 @@ function flatMapBy(callable|null $selector = null): callable
         foreach ($recurse($iterable) as $key => $value) {
             try {
                 yield $selector($value, $key);
-            }
-            catch (Throwable $exception) {
+            } catch (Throwable $exception) {
                 $catching($exception);
             }
         }
@@ -219,7 +213,7 @@ function flatMapBy(callable|null $selector = null): callable
 /**
  * Groups elements by a key selected from each element, yielding groups as nested enumerables.
  *
- * @param (callable(mixed,mixed):mixed) $selector A callable receiving (value, key) and returning the group key.
+ * @param  (callable(mixed,mixed):mixed)            $selector A callable receiving (value, key) and returning the group key.
  * @return (callable(iterable,(callable)):iterable) A callable that yields the group key => group elements as an array.
  *
  * @example
@@ -235,8 +229,7 @@ function groupBy(callable $selector): callable
         foreach ($iterable as $key => $value) {
             try {
                 $groups[$selector($value, $key)][$key] = $value;
-            }
-            catch (Throwable $exception) {
+            } catch (Throwable $exception) {
                 $catching($exception);
             }
         }
@@ -248,7 +241,7 @@ function groupBy(callable $selector): callable
 /**
  * Partitions an iterable into an iterable of equal sized arrays.
  *
- * @param int $size The number of elements per window. Must be positive.
+ * @param  int                                      $size The number of elements per window. Must be positive.
  * @return (callable(iterable,(callable)):iterable) A callable that yields arrays of up to $size elements. The final window may be smaller.
  *
  * @example
@@ -269,8 +262,7 @@ function windowBy(int $size): callable
                 }
 
                 $window[$key] = $value;
-            }
-            catch (Throwable $exception) {
+            } catch (Throwable $exception) {
                 $catching($exception);
             }
         }

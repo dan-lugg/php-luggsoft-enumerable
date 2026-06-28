@@ -6,7 +6,7 @@ use ArrayIterator;
 
 class EnumerateTest extends TestCaseBase
 {
-    public function testEnumerateWithArray(): void
+    public function test_enumerate_with_array(): void
     {
         $result = [];
         $enumerable = enumerate([1, 2, 3]);
@@ -18,7 +18,7 @@ class EnumerateTest extends TestCaseBase
         $this->assertEquals([1, 2, 3], $result);
     }
 
-    public function testEnumerateWithIterator(): void
+    public function test_enumerate_with_iterator(): void
     {
         $result = [];
         $enumerable = enumerate(new ArrayIterator([1, 2, 3]));
@@ -30,7 +30,7 @@ class EnumerateTest extends TestCaseBase
         $this->assertEquals([1, 2, 3], $result);
     }
 
-    public function testEnumerateWithGenerator(): void
+    public function test_enumerate_with_generator(): void
     {
         $result = [];
         $enumerable = enumerate(function () {
@@ -44,7 +44,7 @@ class EnumerateTest extends TestCaseBase
         $this->assertEquals([1, 2, 3], $result);
     }
 
-    public function testEnumerateWithArrayEmpty(): void
+    public function test_enumerate_with_array_empty(): void
     {
         $result = [];
         $enumerable = enumerate([]);
@@ -56,7 +56,7 @@ class EnumerateTest extends TestCaseBase
         $this->assertEquals([], $result);
     }
 
-    public function testEnumerateWithIteratorEmpty(): void
+    public function test_enumerate_with_iterator_empty(): void
     {
         $result = [];
         $enumerable = enumerate(new ArrayIterator());
@@ -68,7 +68,7 @@ class EnumerateTest extends TestCaseBase
         $this->assertEquals([], $result);
     }
 
-    public function testEnumerateWithGeneratorEmpty(): void
+    public function test_enumerate_with_generator_empty(): void
     {
         $result = [];
 
