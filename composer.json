@@ -10,8 +10,8 @@
     }
   ],
   "support": {
-    "issues": "https://github.com/luggsoft/luggsoft-php-enumerable/issues",
-    "source": "https://github.com/luggsoft/luggsoft-php-enumerable"
+    "issues": "https://github.com/dan-lugg/php-luggsoft-enumerable/issues",
+    "source": "https://github.com/dan-lugg/php-luggsoft-enumerable"
   },
   "keywords": [
     "enumerable",

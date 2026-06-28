@@ -5,7 +5,7 @@ Thank you for considering contributing to `luggsoft/enumerable`.
 ## Getting Started
 
 1. Fork the repository.
-2. Clone your fork: `git clone git@github.com:your-username/luggsoft-php-enumerable.git`
+2. Clone your fork: `git clone git@github.com:your-username/php-luggsoft-enumerable.git`
 3. Install dependencies: `composer install`
 4. Create a feature branch: `git checkout -b feature/my-feature`
 

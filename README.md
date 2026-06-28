@@ -2,8 +2,8 @@
 
 [![Packagist Version](https://img.shields.io/packagist/v/luggsoft/enumerable)](https://packagist.org/packages/luggsoft/enumerable)
 [![PHP Version](https://img.shields.io/packagist/php-v/luggsoft/enumerable)](https://packagist.org/packages/luggsoft/enumerable)
-[![License](https://img.shields.io/github/license/luggsoft/luggsoft-php-enumerable)](LICENSE)
-[![CI](https://github.com/luggsoft/luggsoft-php-enumerable/actions/workflows/main.yml/badge.svg)](https://github.com/luggsoft/luggsoft-php-enumerable/actions/workflows/main.yml)
+[![License](https://img.shields.io/github/license/dan-lugg/php-luggsoft-enumerable)](LICENSE)
+[![CI](https://github.com/dan-lugg/php-luggsoft-enumerable/actions/workflows/main.yml/badge.svg)](https://github.com/dan-lugg/php-luggsoft-enumerable/actions/workflows/main.yml)
 
 A fluent, lazy enumeration library for PHP inspired by LINQ and Java Streams. Provides a unified API for working with
 arrays, iterators, and generators through composable transformations and terminal operations.
