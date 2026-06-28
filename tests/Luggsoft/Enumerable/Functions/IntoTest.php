@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Luggsoft\Enumerable\Functions;
 
 use Exception;
@@ -268,7 +270,7 @@ class IntoTest extends TestCaseBase
     public function test_into_all_of_exception_caught(): void
     {
         $result = enumerate([2, 4, 6], fn (Throwable $e) => null)
-            ->into(allOf(fn (int $v): int => $v === 4
+            ->into(allOf(fn (int $v): bool => $v === 4
                 ? throw new Exception('Fail')
                 : $v % 2 === 0));
 
@@ -281,7 +283,7 @@ class IntoTest extends TestCaseBase
 
         $this->expectExceptionOfClassIn(Exception::class, function () use (&$result) {
             $result = enumerate([2, 4, 6])
-                ->into(allOf(fn (int $v): int => $v === 4
+                ->into(allOf(fn (int $v): bool => $v === 4
                     ? throw new Exception('Fail')
                     : $v % 2 === 0));
         });
@@ -316,7 +318,7 @@ class IntoTest extends TestCaseBase
     public function test_into_any_of_exception_caught(): void
     {
         $result = enumerate([1, 2, 3, 4], fn (Throwable $e) => null)
-            ->into(anyOf(fn (int $v): int => $v === 2
+            ->into(anyOf(fn (int $v): bool => $v === 2
                 ? throw new Exception('Fail')
                 : $v % 2 === 0));
 
@@ -329,7 +331,7 @@ class IntoTest extends TestCaseBase
 
         $this->expectExceptionOfClassIn(Exception::class, function () use (&$result) {
             $result = enumerate([1, 2, 3])
-                ->into(anyOf(fn (int $v): int => $v === 2
+                ->into(anyOf(fn (int $v): bool => $v === 2
                     ? throw new Exception('Fail')
                     : $v % 2 === 0));
         });

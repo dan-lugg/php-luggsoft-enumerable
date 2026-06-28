@@ -139,6 +139,7 @@ Temporary Items
 
 # Build data
 /build/
+/.php-cs-fixer.cache
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij+iml,phpunit,composer,macos
 

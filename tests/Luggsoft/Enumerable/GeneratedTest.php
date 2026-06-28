@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Luggsoft\Enumerable;
 
 class GeneratedTest extends TestCaseBase
