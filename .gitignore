@@ -135,9 +135,13 @@ Temporary Items
 
 # PHPUnit
 /app/phpunit.xml
-/phpunit.xml
+/phpunit.xml.dist
 
 # Build data
 /build/
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij+iml,phpunit,composer,macos
+
+### Ignore ###
+
+*.ignore

@@ -7,8 +7,15 @@ use Throwable;
 use function Luggsoft\Enumerable\enumerate;
 
 /**
- * @param (callable(mixed,mixed):void) $callable
- * @return (callable(iterable,(callable)):iterable)
+ * Invokes a side-effect callable for each element, yielding the original elements unchanged.
+ *
+ * @param (callable(mixed,mixed):void) $callable A callable invoked with (value, key) for each element. Return value is ignored.
+ * @return (callable(iterable,(callable)):iterable) A callable that yields the original key-value pairs after invoking $callable.
+ *
+ * @example
+ * enumerate(['a', 'b', 'c'])
+ *     ->then(forEachWith(fn(string $v, int $k) => print("$k: $v\n")))
+ *     ->into(arrayOf()); // still yields ['a', 'b', 'c']
  */
 function forEachWith(callable $callable): callable
 {
@@ -27,8 +34,15 @@ function forEachWith(callable $callable): callable
 
 
 /**
- * @param (callable(mixed,mixed):mixed) $selector
- * @return (callable(iterable,(callable)):iterable)
+ * Transforms each element using a selector, preserving keys.
+ *
+ * @param (callable(mixed,mixed):mixed) $selector A callable receiving (value, key) and returning the transformed value.
+ * @return (callable(iterable,(callable)):iterable) A callable that yields the transformed values with original keys preserved.
+ *
+ * @example
+ * enumerate([1, 2, 3])
+ *     ->then(mapBy(fn(int $v): int => $v * 10))
+ *     ->into(arrayOf()); // [0 => 10, 1 => 20, 2 => 30]
  */
 function mapBy(callable $selector): callable
 {
@@ -45,8 +59,15 @@ function mapBy(callable $selector): callable
 }
 
 /**
- * @param (callable(mixed,mixed):mixed) $selector
- * @return (callable(iterable,(callable)):iterable)
+ * Transforms each key using a selector, preserving values.
+ *
+ * @param (callable(mixed,mixed):mixed) $selector A callable receiving (value, key) and returning the new key.
+ * @return (callable(iterable,(callable)):iterable) A callable that yields values with transformed keys.
+ *
+ * @example
+ * enumerate(['a' => 1, 'b' => 2])
+ *     ->then(mapKeysBy(fn(int $v, string $k): string => strtoupper($k)))
+ *     ->into(arrayOf()); // ['A' => 1, 'B' => 2]
  */
 function mapKeysBy(callable $selector): callable
 {
@@ -63,8 +84,15 @@ function mapKeysBy(callable $selector): callable
 }
 
 /**
- * @param (callable(mixed,mixed):bool)|null $predicate
- * @return (callable(iterable,(callable)):iterable)
+ * Yields only elements satisfying the predicate.
+ *
+ * @param (callable(mixed,mixed):bool)|null $predicate A predicate receiving (value, key). Defaults to a truthiness check via empty().
+ * @return (callable(iterable,(callable)):iterable) A callable that yields only the key-value pairs for which the predicate returns true.
+ *
+ * @example
+ * enumerate([1, 2, 3, 4])
+ *     ->then(filterBy(fn(int $v): bool => $v % 2 === 0))
+ *     ->into(arrayOf()); // [1 => 2, 3 => 4]
  */
 function filterBy(callable|null $predicate = null): callable
 {
@@ -85,8 +113,15 @@ function filterBy(callable|null $predicate = null): callable
 }
 
 /**
- * @param (callable(mixed,mixed):bool)|null $predicate
- * @return (callable(iterable,(callable)):iterable)
+ * Yields elements while the predicate holds, then stops iteration.
+ *
+ * @param (callable(mixed,mixed):bool)|null $predicate A predicate receiving (value, key). Defaults to a truthiness check via empty().
+ * @return (callable(iterable,(callable)):iterable) A callable that yields elements until the predicate returns false, then stops.
+ *
+ * @example
+ * enumerate([2, 4, 5, 6])
+ *     ->then(takeWhile(fn(int $v): bool => $v % 2 === 0))
+ *     ->into(arrayOf()); // [0 => 2, 1 => 4]
  */
 function takeWhile(callable|null $predicate = null): callable
 {
@@ -110,8 +145,15 @@ function takeWhile(callable|null $predicate = null): callable
 }
 
 /**
- * @param (callable(mixed,mixed):bool)|null $predicate
- * @return (callable(iterable,(callable)):iterable)
+ * Skips elements while the predicate holds, then yields the rest.
+ *
+ * @param (callable(mixed,mixed):bool)|null $predicate A predicate receiving (value, key). Defaults to a truthiness check via empty().
+ * @return (callable(iterable,(callable)):iterable) A callable that drops elements while the predicate is true, then yields all remaining elements.
+ *
+ * @example
+ * enumerate([1, 2, 3, 4, 5])
+ *     ->then(dropWhile(fn(int $v): bool => $v < 3))
+ *     ->into(arrayOf()); // [2 => 3, 3 => 4, 4 => 5]
  */
 function dropWhile(callable|null $predicate = null): callable
 {
@@ -137,8 +179,15 @@ function dropWhile(callable|null $predicate = null): callable
 }
 
 /**
- * @param (callable(mixed,mixed):mixed)|null $selector
- * @return (callable(iterable,(callable)):iterable)
+ * Flattens nested iterables and transforms each element via an optional selector.
+ *
+ * @param (callable(mixed,mixed):mixed)|null $selector A selector receiving (value, key). Defaults to identity (returns $value).
+ * @return (callable(iterable,(callable)):iterable) A callable that recursively flattens nested iterables and yields transformed values.
+ *
+ * @example
+ * enumerate([1, [2, 3], 4])
+ *     ->then(flatMapBy())
+ *     ->into(arrayOf()); // [0 => 1, 1 => 2, 2 => 3, 3 => 4] (numeric keys)
  */
 function flatMapBy(callable|null $selector = null): callable
 {
@@ -168,8 +217,15 @@ function flatMapBy(callable|null $selector = null): callable
 }
 
 /**
- * @param (callable(mixed,mixed):mixed) $selector
- * @return (callable(iterable,(callable)):iterable)
+ * Groups elements by a key selected from each element, yielding groups as nested enumerables.
+ *
+ * @param (callable(mixed,mixed):mixed) $selector A callable receiving (value, key) and returning the group key.
+ * @return (callable(iterable,(callable)):iterable) A callable that yields the group key => group elements as an array.
+ *
+ * @example
+ * enumerate(range(1, 6))
+ *     ->then(groupBy(fn(int $v): string => $v % 2 === 0 ? 'even' : 'odd'))
+ *     ->into(arrayOf()); // ['odd' => [0 => 1, 2 => 3, 4 => 5], 'even' => [1 => 2, 3 => 4, 5 => 6]]
  */
 function groupBy(callable $selector): callable
 {
@@ -185,15 +241,20 @@ function groupBy(callable $selector): callable
             }
         }
 
-        return enumerate($groups);
+        yield from enumerate($groups);
     };
 }
 
 /**
  * Partitions an iterable into an iterable of equal sized arrays.
  *
- * @param int $size
- * @return (callable(iterable,(callable)):iterable)
+ * @param int $size The number of elements per window. Must be positive.
+ * @return (callable(iterable,(callable)):iterable) A callable that yields arrays of up to $size elements. The final window may be smaller.
+ *
+ * @example
+ * enumerate([1, 2, 3, 4, 5])
+ *     ->then(windowBy(2))
+ *     ->into(arrayOf()); // [[0 => 1, 1 => 2], [2 => 3, 3 => 4], [4 => 5]]
  */
 function windowBy(int $size): callable
 {
