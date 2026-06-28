@@ -31,7 +31,7 @@ jobs:
           dependency-versions: ${{ matrix.dependencies }}
 
       - name: PHPUnit
-        run: vendor/bin/phpunit
+        run: bin/phpunit
 
   static-analysis:
     runs-on: ubuntu-latest
@@ -50,7 +50,7 @@ jobs:
         uses: ramsey/composer-install@v3
 
       - name: PHPStan
-        run: vendor/bin/phpstan analyse --configuration=phpstan.neon.dist --no-progress
+        run: bin/phpstan analyse --configuration=phpstan.neon.dist --no-progress
 
   code-style:
     runs-on: ubuntu-latest
@@ -69,4 +69,4 @@ jobs:
         uses: ramsey/composer-install@v3
 
       - name: PHP-CS-Fixer
-        run: vendor/bin/php-cs-fixer fix --dry-run --diff
+        run: bin/php-cs-fixer fix --dry-run --diff
